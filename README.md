@@ -21,3 +21,11 @@ An x86 assembly console program for storing and printing multi-size data arrays.
    masm ....asm;
    link ....obj;
    ....exe
+
+## Workflow Screenshot
+<img width="635" height="386" alt="image" src="https://github.com/user-attachments/assets/d5613d1d-a693-45bf-a27e-6f8c72ed7ad2" />
+# SELECTION DEMO: 1-byte array mode
+<img width="632" height="397" alt="image" src="https://github.com/user-attachments/assets/386ec56b-05dd-4ac1-8b0d-4c769d8d77a2" />
+# SELECTION DEMO: 10-byte array mode
+<img width="622" height="91" alt="image" src="https://github.com/user-attachments/assets/2225d045-2052-4b6d-afc0-aac882a4d37d" />
+
