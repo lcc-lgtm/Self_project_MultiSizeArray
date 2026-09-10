@@ -201,6 +201,7 @@ MAIN ENDP
 ; ============== key in array =====================
 ; ====================== 
 ONE_BYTE_STORE PROC
+	call CLEAR_SCREEN
 	push cx
 	
 	; array counter
@@ -254,6 +255,7 @@ ONE_BYTE_STORE ENDP
 
 ; ====================== 
 TWO_BYTE_STORE PROC
+	call CLEAR_SCREEN
 	push cx
 	; array counter
 	mov si, 0
@@ -326,6 +328,7 @@ TWO_BYTE_STORE ENDP
 
 ; ====================== 
 FOUR_BYTE_STORE PROC
+	call CLEAR_SCREEN
 	push cx
 	; array counter
 	mov si, 0
@@ -398,6 +401,7 @@ FOUR_BYTE_STORE ENDP
 
 ; ====================== 
 EIGHT_BYTE_STORE PROC
+	call CLEAR_SCREEN
 	push cx
 	; array counter
 	mov si, 0
@@ -470,6 +474,7 @@ EIGHT_BYTE_STORE ENDP
 
 ; ====================== 
 TEN_BYTE_STORE PROC
+	call CLEAR_SCREEN
 	push cx
 	; array counter
 	mov si, 0
