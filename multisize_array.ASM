@@ -1,7 +1,7 @@
 .MODEL SMALL
 .STACK 100
 .DATA
-	greet	db	"Welcome to CURSOR.ASM testing...",0ah,0dh
+	greet	db	0ah,0dh,"Welcome to CURSOR.ASM testing...",0ah,0dh,0ah,0dh
 			db	"	1	-	 1-byte array",0ah,0dh
 			db	"	2	-	 2-byte array",10,13
 			db	"	3	-	 4-byte array",0ah,0dh
@@ -9,16 +9,16 @@
 			db	"	5	-	10-byte array",0ah,0dh
 			db	0ah,0dh,"	0	-	exit program",0ah,0dh,"$"
 		
-	_return_str	db	" << Press 'ENTER' key to return >> $"
-	_exit_str	db	"   << Press 'ESC' key to exit >> $"
-	_enter	db	"ENTER : $"
-	_enter_msg	db " << Press ENTER to continue >> $"
-	buffer 	db 	?
-	printer_msg	db 0ah,0dh,0ah,0dh," << Printed information >> $"
-	system_start	db	0ah,0dh,0ah,0dh," << Start your demo >> $"
+	_return_str	 db	" << Press 'ENTER' key to return >> $"
+	_exit_str	 db	"   << Press 'ESC' key to exit >> $"
+	_enter		 db	"ENTER : $"
+	_enter_msg	 db " << Press ENTER to continue >> $"
+	buffer 		 db 	?
+	printer_msg	 db 0ah,0dh," << Printed information >> $"
+	system_start db	0ah,0dh," << Start your demo >> $"
 
-	INVALID_MSG	db	" Invalid input ! $"
-	NL 		db  0ah,0dh,"$"
+	INVALID_MSG	 db	" Invalid input ! $"
+	NL 			 db  0ah,0dh,"$"
 	
 	; 1-byte array
 	one_byte_array		db	?,?,?,?
@@ -69,6 +69,8 @@
 MAIN PROC
     MOV AX, @DATA
     MOV DS, AX
+	
+	call CLEAR_SCREEN
 	
 	; greeting
 	mov ah, 09h
@@ -243,10 +245,6 @@ ONE_BYTE_STORE PROC
 		cmp al, 1Bh
 		je END_LOOP_ONE_BYTE_STORE
 		
-		mov ah,09h
-		lea dx,NL
-		int 21h
-		
 		loop one_byte_loop
 END_LOOP_ONE_BYTE_STORE:
 	pop cx
@@ -274,6 +272,10 @@ TWO_BYTE_STORE PROC
 		; user ENTER	input string AH=0Ah
 		mov ah, 0Ah
 		lea dx, two_byte_array_buffer
+		int 21h
+		
+		mov ah,09h
+		lea dx,NL
 		int 21h
 		
 		; store two_byte_array_outputstring in two_byte_array[si]
@@ -315,10 +317,6 @@ TWO_BYTE_STORE PROC
 		cmp al, 1Bh
 		je END_LOOP_TWO_BYTE_STORE
 		
-		mov ah,09h
-		lea dx,NL
-		int 21h
-		
 		loop two_byte_loop
 END_LOOP_TWO_BYTE_STORE:
 	pop cx
@@ -345,6 +343,10 @@ FOUR_BYTE_STORE PROC
 		; user ENTER	input string AH=0Ah
 		mov ah, 0Ah
 		lea dx, four_byte_array_buffer
+		int 21h
+		
+		mov ah,09h
+		lea dx,NL
 		int 21h
 		
 		; store four_byte_array_outputstring in four_byte_array[si]
@@ -387,10 +389,6 @@ FOUR_BYTE_STORE PROC
 		cmp al, 1Bh
 		je END_LOOP_FOUR_BYTE_STORE
 		
-		mov ah,09h
-		lea dx,NL
-		int 21h
-		
 		loop four_byte_loop
 END_LOOP_FOUR_BYTE_STORE:
 	pop cx
@@ -417,6 +415,10 @@ EIGHT_BYTE_STORE PROC
 		; user ENTER	input string AH=0Ah
 		mov ah, 0Ah
 		lea dx, eight_byte_array_buffer
+		int 21h
+		
+		mov ah,09h
+		lea dx,NL
 		int 21h
 		
 		; store eight_byte_array_outputstring in eight_byte_array[si]
@@ -459,10 +461,6 @@ EIGHT_BYTE_STORE PROC
 		cmp al, 1Bh
 		je END_LOOP_EIGHT_BYTE_STORE
 		
-		mov ah,09h
-		lea dx,NL
-		int 21h
-		
 		loop eight_byte_loop
 END_LOOP_EIGHT_BYTE_STORE:
 	pop cx
@@ -489,6 +487,10 @@ TEN_BYTE_STORE PROC
 		; user ENTER	input string AH=0Ah
 		mov ah, 0Ah
 		lea dx, ten_byte_array_buffer
+		int 21h
+		
+		mov ah,09h
+		lea dx,NL
 		int 21h
 		
 		; store ten_byte_array_outputstring in ten_byte_array[si]
@@ -530,10 +532,6 @@ TEN_BYTE_STORE PROC
 		int 21h
 		cmp al, 1Bh
 		je END_LOOP_TEN_BYTE_STORE
-		
-		mov ah,09h
-		lea dx,NL
-		int 21h
 		
 		loop ten_byte_loop
 END_LOOP_TEN_BYTE_STORE:
@@ -756,5 +754,22 @@ PRINT_TEN PROC
 		loop LOOP_PRINT_TEN
 	ret
 PRINT_TEN ENDP
+
+CLEAR_SCREEN PROC
+	; clear window
+	mov ah, 06h
+	mov al, 00h     ; whole screen  
+	mov bh, 07h     ; black + white
+	mov cx, 0000h   ; ch = 00h   cl = 00h
+	mov dx, 184Fh   ; dh = 18h   dl = 4fh
+	int 10h			; 80*25 px
+	
+	; reset cursor
+	mov ah, 02h
+	mov bh, 00h        ; first page
+	mov dx, 0000h      ; row = 0    col = 0
+	int 10h
+	ret
+CLEAR_SCREEN ENDP
 
 END MAIN
